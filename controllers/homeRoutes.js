@@ -5,7 +5,7 @@ const withAuth = require('../utils/auth');
 // get all posts for homepage
 router.get('/', async (req, res) => {
   try {
-    const getDashboardPosts = await Post.findAll({
+    const getDashboardPost = await Post.findAll({
       include: [
         {
           model: Comment,
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
       ]
     });
 
-    const posts = getDashboardPosts.map(post => post.get({ plain: true }));
+    const posts = getDashboardPost.map(post => post.get({ plain: true }));
 
     res.render('homepage', {
       posts,
@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
 // get single post
 router.get('/post/:id', async (req, res) => {
   try {
-    const dbPostData = await Post.findOne({
+    const getDashboardPost = await Post.findOne({
       where: {
         id: req.params.id
       },
@@ -63,12 +63,12 @@ router.get('/post/:id', async (req, res) => {
       ]
     });
 
-    if (!dbPostData) {
+    if (!getDashboardPost) {
       res.status(404).json({ message: 'No post found with this id' });
       return;
     }
 
-    const post = dbPostData.get({ plain: true });
+    const post = getDashboardPost.get({ plain: true });
 
     res.render('single-post', {
       post,
